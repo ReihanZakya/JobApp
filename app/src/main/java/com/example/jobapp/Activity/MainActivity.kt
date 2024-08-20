@@ -1,21 +1,38 @@
 package com.example.jobapp.Activity
 
 import android.os.Bundle
+import android.view.WindowManager
+import android.widget.ArrayAdapter
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.jobapp.R
+import com.example.jobapp.ViewModel.MainViewModel
+import com.example.jobapp.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
+
+    lateinit var binding: ActivityMainBinding
+    private val mainViewModel: MainViewModel by viewModels()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
-        setContentView(R.layout.activity_main)
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-            insets
-        }
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
+        window.setFlags(
+            WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
+            WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS
+        )
+
+        initLocation()
+    }
+
+    private fun initLocation(){
+        val adapter = ArrayAdapter(this, R.layout.spinner_item, mainViewModel.loadLocation())
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        binding.LocationSp.adapter = adapter
     }
 }
