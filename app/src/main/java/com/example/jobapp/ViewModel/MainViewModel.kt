@@ -8,4 +8,5 @@ class MainViewModel(val repository: MainRepository):ViewModel() {
 
     fun loadLocation()=repository.location
     fun loadCategory()=repository.category
+    fun loadData()=repository.items
 }
